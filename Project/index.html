@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name='author' content='Biplab Khanra'>
+    <title>The Narrative of CO2 produced (in metric ton per capita) by each country in the world</title>
+    <!-- Load favicon -->
+    <!-- Load css files -->
+    <link rel='stylesheet' type='text/css' href='css/style.css'>
+    <!-- Load d3.js libraries -->
+    <script src='https://d3js.org/d3.v4.min.js'></script>
+    <!-- Load custom scripts -->
+    <script type="text/javascript" src='js/chart_scatter.js' charset='utf-8'></script>
+    <script type="text/javascript" src='js/chart_bar.js' charset='utf-8'></script>
+    <script type="text/javascript" src='js/index.js' charset='utf-8'></script>
+
+</head>
+
+<body>
+    <div id='header'>
+        <h1 style="text-align:center">How much CO2 produced (in metric ton per capita) by each country in the world every year in between 1990 and 2020?</h1>
+    </div>
+    <div id='introDivId'>
+        <p style="text-align:center;"><img src="img/WorldCO2.jpg" alt="The CO2 produced Map/Line Chart of Countries" style="height:300px;"></p>
+        <br> Per capita CO2 emissions vary significantly across countries, reflecting differences in industrial activities, energy consumption, and population sizes. Qatar has the highest per capita emissions, exceeding 30 metric tons per person annually due to its oil and gas industry. Similarly, Kuwait and the United Arab Emirates have high per capita emissions, around 25 and 20 metric tons respectively.</br>
+
+<br>In developed countries, the United States stands out with about 15 metric tons per person each year, driven by substantial energy use across various sectors. China, while being the largest overall emitter, has per capita emissions of around 7 metric tons, reflecting its vast population.</br>
+
+<br> European countries like Germany and the United Kingdom have lower per capita emissions, around 9 and 5 metric tons per person respectively. India's per capita emissions are much lower at about 2 metric tons, due to its large population and lower industrialization level.</br>
+
+<br>These figures highlight the need for diverse and tailored approaches in addressing global CO2 reduction efforts, considering both total and per capita emissions.</br>
+    </div>
+    <br>
+    <div id='buttonsDivId'>
+        <button id="bp" type="button" class="btn btn-default" style="visibility : hidden" onclick="previousScene()">&laquo; Previous Year</button>
+        <button id="bs" type="button" class="btn-summer btn-default" onclick="DataProcessMethod()">Explore CO2 Produced by Countries </button>
+        <button id="bh" type="button" class="btn-home btn-default" style="visibility : hidden" onclick="homeScene()"></button>
+
+        <button id="bp" type="button" style="visibility : hidden"> </button>
+
+        <button id="bn" type="button" class="btn btn-default" style="visibility : hidden" onclick="nextScene(0)"> Next Year &raquo;</button>
+    </div>
+    <div id='yearsDivId'></div>
+    <div id="venueDivId"></div>
+    <div id='scatterDivId'></div>
+    <div id='barDivId'></div>
+    <div id='sourceDivId'></div>
+</body>
+
+</html>
