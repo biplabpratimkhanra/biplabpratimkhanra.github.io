@@ -28,9 +28,6 @@ function loadChart1(EventId) {
         .attr("width", canvas.width)
         .attr("height", canvas.height)
         .style("background-color", Event ? '#b3daf117' : '#ffff6f07')
-        //.call(d3.zoom().on("zoom", function() {
-        //svg.attr("transform", d3.event.transform)
-        //}))
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
@@ -49,6 +46,8 @@ function loadChart1(EventId) {
         // Calculate the extreme values for the selected Event
         var pop_minmax = getMinMaxPopulation(data);
         var gdp_minmax = getMinMaxGDP(data);
+        var GDP_Per_Capita_Max = gdp_minmax[1];
+        //console.log("Gdp_max:", gdp_minmax[1])
         var CO2s_max = getMaxCO2s(data);
         var continents = getContinentsList(data);
 
@@ -130,7 +129,7 @@ function loadChart1(EventId) {
             .style("opacity", 0).transition().duration(2000).style("opacity", 1)
             .attr("class", "x label")
             .attr('text-anchor', 'middle')
-            .text("Current population (in milions, log scale)");
+            .text("Population (in milions - log scale)");
 
         svg.append('g')
             .attr('transform', 'translate(' + (-margin.left + 15) + ', ' + (chart.height / 2 + margin.top) + ')')
@@ -138,7 +137,7 @@ function loadChart1(EventId) {
             .attr("class", "y label")
             .attr('text-anchor', 'middle')
             .attr("transform", "rotate(-90)")
-            .text("Current GDP per Capita (in USD)")
+            .text("GDP per Capita (in USD)")
             .style("opacity", 0).transition().duration(2000).style("opacity", 1);
 
         // Add circles
@@ -227,7 +226,7 @@ function loadChart1(EventId) {
             .attr("class", "annotation")
             .style("text-anchor", "middle")
             .style('font-family', 'Montserrat')  // Set the font family
-            .style('font-size', '13px')
+            .style('font-size', '15px')
             .style('fill', 'red')
             .text("Tip 1: hover over the circles for more details; Tip 2: hover over the color legend to filter continents")
             .style('opacity', 0);
@@ -250,10 +249,11 @@ function loadChart1(EventId) {
             .attr('x2', xMaxcountry)
             .attr('y1', function(d) { return y(getGDPperCapita(d)); })
             .attr('y2', function(d) { return yMaxcountry; })
-            .attr('stroke', 'black')
+            .attr('stroke', 'red')
             .style('stroke-opacity', 0).transition().delay(2750).duration(2000).style('stroke-opacity', 0.5)
             .attr("stroke-width", 0.5)
-            .style('stroke-dasharray', ('1,1'));
+           // .style('stroke-dasharray', ('1,1'));
+            .style('stroke-dasharray', null);
 
         maxCountry.append("text")
             .attr('x', xMaxcountry)
@@ -266,11 +266,11 @@ function loadChart1(EventId) {
             .style('font-family', 'Calibri')
             .style("fill-opacity", 0).transition().delay(3000).duration(2000).style("fill-opacity", 0.5);
 
-        // Add annotations (Event country)
-        var xEventcountry = chart.width / 3;
-        var yEventcountry = 50;
+        // Add annotations (Max Population)
+        var xPopcountry = chart.width / 3;
+        var yPopcountry = 50;
 
-        var EventCountryAnnotation = svg.selectAll("Eventcountry")
+        var PopCountryAnnotation = svg.selectAll("Popcountry")
             .data(data.filter(
                 function(d) {
                     return (d.Country_Name == PopulationData);
@@ -279,25 +279,77 @@ function loadChart1(EventId) {
             .enter()
             .append("g");
 
-        EventCountryAnnotation.append("line")
+        PopCountryAnnotation.append("line")
             .attr('x1', function(d) { return x(getPopulation(d)); })
-            .attr('x2', xEventcountry)
+            .attr('x2', xPopcountry)
             .attr('y1', function(d) { return y(getGDPperCapita(d)); })
-            .attr('y2', yEventcountry)
-            .attr('stroke', 'black')
+            .attr('y2', yPopcountry)
+            .attr('stroke', 'red')
             .style('stroke-opacity', 0).transition().delay(3000).duration(2000).style('stroke-opacity', 0.5)
             .attr("stroke-width", 0.5)
-            .style('stroke-dasharray', ('1,1'));
+            .style('stroke-dasharray', null);
+           // .style('stroke-dasharray', ('1,1'));
 
-        EventCountryAnnotation.append("text")
-            .attr('x', xEventcountry)
+        PopCountryAnnotation.append("text")
+            .attr('x', xPopcountry)
             .attr('dy', '-0.3em')
-            .attr('y', yEventcountry)
+            .attr('y', yPopcountry)
             .text('Country with largest population')
             .style("font-size", '10pt')
             .style('text-decoration', "underline")
             .style('text-anchor', "middle")
+            .style('font-family', 'Calibri')
             .style("fill-opacity", 0).transition().delay(3250).duration(2000).style("fill-opacity", 0.6);
+
+//Annotation for GDP per capita
+
+            // Add annotations (Max Population)
+        var xGDPcountry = (chart.width * 2) / 3;
+        var yGDPcountry = 50;
+
+        var GDPCountryAnnotation = svg.selectAll("GDPcountry")
+            .data(data.filter(
+                function(d) {
+                    return (computeTotalGDPs(d) == GDP_Per_Capita_Max);
+                }
+            ))
+            .enter()
+            .append("g");
+
+
+
+/*var maxCountry = svg.selectAll("maxcountry")
+            .data(data.filter(
+                function(d) {
+                    return (computeTotalCO2s(d) == GDP_Per_Capita_Max);
+                }
+            ))*/
+
+
+        GDPCountryAnnotation.append("line")
+            .attr('x1', function(d) { return x(getPopulation(d)); })
+            .attr('x2', xGDPcountry)
+            .attr('y1', function(d) { return y(getGDPperCapita(d)); })
+            .attr('y2', yGDPcountry)
+            .attr('stroke', 'red')
+            .style('stroke-opacity', 0).transition().delay(3000).duration(2000).style('stroke-opacity', 0.5)
+            .attr("stroke-width", 0.5)
+            .style('stroke-dasharray', null);
+           // .style('stroke-dasharray', ('1,1'));
+
+        GDPCountryAnnotation.append("text")
+            .attr('x', xGDPcountry)
+            .attr('dy', '-0.3em')
+            .attr('y', yGDPcountry)
+            .text('Country with highest GDP per capita')
+            .style("font-size", '10pt')
+            .style('text-decoration', "underline")
+            .style('text-anchor', "middle")
+            .style('font-family', 'Calibri')
+            .style("fill-opacity", 0).transition().delay(3250).duration(2000).style("fill-opacity", 0.6);
+
+// Annotation END
+
 
     });
 
@@ -364,6 +416,24 @@ function loadChart1(EventId) {
         else
         {
             tot = CO2PerCapita;
+            
+        }
+        
+        return tot;
+    }
+
+function computeTotalGDPs(d) {
+
+        let { CO2PerCapita, CountryPopulation, GDP_Per_Capita } = getCO2s(d);
+        
+        var tot = 0;
+
+        if (GDP_Per_Capita == 0.0 || CO2PerCapita == 0.0 || CountryPopulation == 0) {
+            tot=0;
+            }
+        else
+        {
+            tot = GDP_Per_Capita;
             
         }
         
@@ -443,6 +513,7 @@ function loadChart1(EventId) {
         htmlInfo = "<b>Country:</b> " + d.Country_Name + '<br>' +
             "&emsp;&#8226;<b>&emsp;Population:</b> " + d3.format(',.3s')(getPopulation(d) * 1e6).replace(/G/, "B") + '<br>' +
             "&emsp;&#8226;<b>&emsp;GDP per Capita:</b> " + "$" + d3.format(',.3s')(getGDPperCapita(d)) + '<br>' +
+            "&emsp;&#8226;<b>&emsp;Income Group:</b> " + d.IncomeGroup + '<br>' +
             "&emsp;&#8226;<b>&emsp;CO2 produced (in metric ton) per Capita:</b> " + totalCO2_s;
 
         return htmlInfo;

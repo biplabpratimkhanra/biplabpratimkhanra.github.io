@@ -30,6 +30,7 @@ function loadChart2(EventId) {
         var allActiveCountries = data.length;
         // Set canvas and chart dimensions
         const width = 0.80 * x_size;
+        //const width = x_size;
         const height = 1000 + (allActiveCountries / allCountries) * (Event ? 500 : 1400);
         const canvas = { width: width, height: height };
         const margin = { left: 65, right: 52, top: 0, bottom: 45 };
@@ -131,7 +132,9 @@ function loadChart2(EventId) {
             .attr("x", x(1))
             .attr("y", function(d) { return y(d.Country_Code); })
             .attr("width", 0)
+            //.attr("width", 1)
             .attr("height", y.bandwidth())
+            //.attr("height", y.bandwidth()*2)
             .style("fill", function(d) { return c(d.Region); })
             .style("opacity", 1.8);
 
@@ -200,6 +203,9 @@ function loadChart2(EventId) {
             .attr("y", chart.height / 2)
             .attr("class", "annotation2")
             .style("text-anchor", "middle")
+            .style('font-family', 'Calibri')  // Set the font family
+            .style('font-size', '25px')
+            .style('fill', 'red')
             .text("Highest CO2 produced by " + Co2MaxCountry + " in " + EventYear )
             .style("opacity", 0).transition().delay(5750).duration(3000).style("opacity", 0.3);
 
@@ -299,6 +305,7 @@ function loadChart2(EventId) {
         htmlInfo = "<b>Country:</b> " + d.Country_Name + '<br>' +
             "&emsp;&#8226;<b>&emsp;Population:</b> " + d3.format(',.3s')(getPopulation(d) * 1e6).replace(/G/, "B") + '<br>' +
             "&emsp;&#8226;<b>&emsp;GDP per Capita:</b> " + "$" + d3.format(',.3s')(getGDPperCapita(d)) + '<br>' +
+            "&emsp;&#8226;<b>&emsp;Income Group:</b> " + d.IncomeGroup + '<br>' +
             "&emsp;&#8226;<b>&emsp;CO2 per capita (in metric ton):</b> " + totalCO2PerCapita ;
 
         
